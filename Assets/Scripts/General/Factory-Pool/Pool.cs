@@ -29,7 +29,7 @@ public class Pool<T>
     public T GetObject()
     {
         T obj = default;
-
+        
         if(_pool.Count > 0)
         {
             obj = _pool[0];
