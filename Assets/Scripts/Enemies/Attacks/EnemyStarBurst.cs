@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemyStarBurst : IEnemyAttack
@@ -17,7 +15,7 @@ public class EnemyStarBurst : IEnemyAttack
             b.speed = speed;
             b.SetCreator(GameManager.instance.enemyBulletPool);
             ((BulletBase)b.bullet).SetLifetime(8).SetSpeed(speed);
-            b.Shoot(Quaternion.AngleAxis(45 * i, Vector3.forward) * Vector2.up, transform.position);
+            b.Shoot((Vector2)(Quaternion.AngleAxis(45 * i, Vector3.forward) * Vector2.up).normalized, transform.position);
         }
     }
 }

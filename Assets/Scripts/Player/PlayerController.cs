@@ -26,5 +26,10 @@ public class PlayerController
         {
             _model.aoe = !_model.aoe;
         }
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            _model.seeking = !_model.seeking;
+        }
+
     }
 }

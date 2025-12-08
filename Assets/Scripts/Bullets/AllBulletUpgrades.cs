@@ -63,3 +63,40 @@ public class BulletAOE : BulletUpgrade
 
 
 }
+
+public class BulletSeeking : BulletUpgrade
+{
+    private bool _enemy;
+    public BulletSeeking(IBullet bullet, bool enemy) : base(bullet)
+    {
+        _enemy = enemy;
+    }
+
+    public override void OnUpdate(Transform transform)
+    {
+        Vector2 dir;
+        float closestD = Mathf.Infinity;
+        if (_enemy) dir = GameManager.instance.player.transform.position - transform.position;
+        else
+        {
+            Transform closest = default;
+            foreach (var e in GameManager.instance.activeEnemies)
+            {
+                var dist = Vector3.Distance(e.transform.position, transform.position);
+                if (dist < closestD)
+                {
+                    closest = e.transform;
+                    closestD = dist;
+                }
+            }
+
+            dir = closest.position - transform.position;
+        }
+        if(closestD < 4)
+        {
+            var t = 1f - Mathf.Pow(0.1f, Time.deltaTime);
+            transform.up = Vector2.Lerp(transform.up, dir.normalized, t);
+        }
+        base.OnUpdate(transform);
+    }
+}

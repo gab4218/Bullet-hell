@@ -11,6 +11,7 @@ public class EnemyBase : MonoBehaviour
     private IEnemyMovement _movement;
     private IEnemyAttack _attack;
     private Rigidbody2D _rb;
+    private CircleCollider2D _circleCollider;
     
 
     public EnemyBase SetSpeed(float speed)
@@ -46,14 +47,16 @@ public class EnemyBase : MonoBehaviour
         _sRenderer = GetComponent<SpriteRenderer>();
         _rb = GetComponent<Rigidbody2D>();
         _attack = new EnemyRadialAttack();
+        _movement = new EnemyBlindChase();
+        _circleCollider = GetComponent<CircleCollider2D>();
     }
 
     
     void Update()
     {
-        //_movement.Move(transform, _rb, _speed);
+        _movement.Move(transform, _rb, _speed);
         _attack.Attack(transform, _cooldown, _bulletSpeed);
-        
+        transform.position += Separate(GameManager.instance.activeEnemies, _circleCollider.radius + 0.1f);
     }
 
     public static void SetState(EnemyBase e, bool state)

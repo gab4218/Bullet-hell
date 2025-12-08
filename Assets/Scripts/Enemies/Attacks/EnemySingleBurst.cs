@@ -1,5 +1,3 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class EnemySingleBurst : IEnemyAttack
@@ -22,7 +20,7 @@ public class EnemySingleBurst : IEnemyAttack
             b.speed = speed;
             b.SetCreator(GameManager.instance.enemyBulletPool);
             ((BulletBase)b.bullet).SetLifetime(8).SetSpeed(speed);
-            b.Shoot(GameManager.instance.player.transform.position - transform.position, transform.position);
+            b.Shoot((Vector2)(GameManager.instance.player.transform.position - transform.position).normalized, transform.position);
             return;
         }
         _t = 0;

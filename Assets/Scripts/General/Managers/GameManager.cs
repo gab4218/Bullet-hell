@@ -15,6 +15,7 @@ public class GameManager : MonoBehaviour
     public Pool<AOE> enemyAOEPool;
     public AOE enemyAOEPrefab;
     public List<EnemyBase> activeEnemies;
+    public Vector4 mapSize = new(-50, 50, -50, 50);
 
     private void Awake()
     {
@@ -30,7 +31,7 @@ public class GameManager : MonoBehaviour
         playerBulletPool = new Pool<Bullet>(new Factory<Bullet>().SetPrefab(playerBulletPrefab), Bullet.SetState);
         playerAOEPool = new Pool<AOE>(new Factory<AOE>().SetPrefab(playerAOEPrefab), AOE.SetState, 30);
         enemyAOEPool = new Pool<AOE>(new Factory<AOE>().SetPrefab(enemyAOEPrefab), AOE.SetState, 30);
-        activeEnemies = new List<EnemyBase>();
+        //activeEnemies = new List<EnemyBase>();
     }
     
 

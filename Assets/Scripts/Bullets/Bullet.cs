@@ -83,7 +83,11 @@ public class Bullet : MonoBehaviour
         bullet = new BulletAOE(bullet, p, transform);
         Debug.Log("asd");
     }
-
+    public void Seeking()
+    {
+        bullet = new BulletSeeking(bullet, false);
+        Debug.Log("ssds");
+    }
     public void SetCreator(Pool<Bullet> p)
     {
         creator = p;

@@ -46,7 +46,7 @@ public class BulletBase : IBullet
     public void Shoot(Vector2 dir, Vector2 originPoint)
     {
         currentLifeTime = 0;
-        parent.transform.up = dir.normalized;
+        parent.transform.up = dir;
         origin = originPoint;
     }
 

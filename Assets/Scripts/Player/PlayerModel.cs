@@ -20,6 +20,8 @@ public class PlayerModel
 
     public bool aoe = false;
 
+    public bool seeking = false;
+
     private int _maxHealth;
 
     private int _currentHealth;
@@ -87,7 +89,7 @@ public class PlayerModel
         var bullet = GameManager.instance.playerBulletPool.GetObject();
         if (aoe) bullet.speed = 1f; else bullet.speed = 2;
         bullet.UpdateValues();
-        bullet.Shoot(dir, tranform.position);
+        bullet.Shoot(dir.normalized, tranform.position);
         bullet.SetCreator(GameManager.instance.playerBulletPool);
         switch (_damageType)
         {
@@ -105,6 +107,7 @@ public class PlayerModel
         }
         if (swirly) bullet.Swirl();
         if (aoe) bullet.SetAOE(GameManager.instance.playerAOEPool);
+        if (seeking) bullet.Seeking();
 
     }
 

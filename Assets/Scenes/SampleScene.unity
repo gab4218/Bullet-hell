@@ -537,7 +537,9 @@ MonoBehaviour:
   playerBulletPrefab: {fileID: 5578890497649858537, guid: c8db60bf365aadc41a1656d6941fa87d, type: 3}
   playerAOEPrefab: {fileID: -8571809266287209509, guid: 585aabb4219893a4b8b13bf062fee5f2, type: 3}
   enemyAOEPrefab: {fileID: -8571809266287209509, guid: 60d990e2c431f7349b83d97e5fb357cf, type: 3}
-  activeEnemies: []
+  activeEnemies:
+  - {fileID: 1141087019}
+  mapSize: {x: 0, y: 0, z: 0, w: 0}
 --- !u!4 &1528691522
 Transform:
   m_ObjectHideFlags: 0
