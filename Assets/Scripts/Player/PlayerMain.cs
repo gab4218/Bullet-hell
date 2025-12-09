@@ -16,6 +16,7 @@ public class PlayerMain : MonoBehaviour
         rb = GetComponent<Rigidbody2D>();
         _model = new PlayerModel(transform, rb).SetSprites(_bulletSprites).SetMaxHealth(_maxHP).SetBaseDamage(_damage).SetSpeed(_speed);
         _controller = new PlayerController(_model);
+        
     }
    
 
@@ -24,5 +25,50 @@ public class PlayerMain : MonoBehaviour
     {
         _controller.OnUpdate();
         _model.OnUpdate();
+    }
+
+    public void UpgradeDamage()
+    {
+        _model.AddDamage(1);
+    }
+
+    public void UpgradeFireRate()
+    {
+        _model.AddFirerate(1);
+    }
+
+    public void UpgradeRange()
+    {
+        _model.AddRange(1f);
+    }
+
+    public void UpgradeMultiShot()
+    {
+        _model.AddBullet();
+    }
+
+    public void UpgradeBulletSpeed()
+    {
+        _model.AddBulletSpeed(0.25f);
+    }
+
+    public void UpgradeSpeed()
+    {
+        _model.AddSpeed(0.25f);
+    }
+
+    public void UpgradeResistance()
+    {
+
+    }
+
+    public void UpgradeHealth()
+    {
+        _model.AddHP(1);
+    }
+
+    public void Heal(int h)
+    {
+        _model.Heal(h);
     }
 }

@@ -30,8 +30,6 @@ public class SoundSingleton : MonoBehaviour
 
     private void Start()
     {
-        EventManager.Subscribe(EventType.Hit, Hit);
-        EventManager.Subscribe(EventType.Miss, Miss);
         EventManager.Subscribe(EventType.Death, Death);
         EventManager.Subscribe(EventType.End, End);
     }
@@ -67,12 +65,7 @@ public class SoundSingleton : MonoBehaviour
         //material.SetColor("_downColor2", Color.Lerp(material.GetColor("_downColor2"), _startColor1, 0.2f));
         //material.SetColor("_sideColor2", Color.Lerp(material.GetColor("_sideColor2"), _startColor2, 0.2f));
     }
-
-    private void OnDestroy()
-    {
-        End();
-        instance = null;
-    }
+    
 
     public void Death(params object[] paramContainer)
     {
@@ -81,15 +74,11 @@ public class SoundSingleton : MonoBehaviour
         //material.SetColor("_sideColor2", _startColor2);
         Camera.main.backgroundColor = _startColor1;
         StartCoroutine(DeathMusicFade());
-        End();
     }
 
     private void End(params object[] paramContainer)
-    {
-        EventManager.Unsubscribe(EventType.Hit, Hit);
-        EventManager.Unsubscribe(EventType.Miss, Miss);
-        EventManager.Unsubscribe(EventType.Death, Death);
-        EventManager.Unsubscribe(EventType.End, End);
+    { 
+        
     }
 
     private IEnumerator DeathMusicFade()

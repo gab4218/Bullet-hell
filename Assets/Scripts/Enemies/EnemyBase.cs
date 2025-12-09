@@ -3,16 +3,16 @@ using UnityEngine;
 
 public class EnemyBase : MonoBehaviour
 {
-    private float _speed = 2;
+    private float _speed = 2f;
     private float _cooldown = 1f;
     private float _bulletSpeed = 2f;
+    private float _hpMultiplier = 1f;
     private Sprite _sprite;
     private SpriteRenderer _sRenderer;
     private IEnemyMovement _movement;
     private IEnemyAttack _attack;
     private Rigidbody2D _rb;
     private CircleCollider2D _circleCollider;
-    
 
     public EnemyBase SetSpeed(float speed)
     {
@@ -33,10 +33,15 @@ public class EnemyBase : MonoBehaviour
         return this;
     }
 
+    public EnemyBase SetHPMultiplier(float hpMult)
+    {
+        _hpMultiplier = hpMult;
+        return this;
+    }
 
     public EnemyBase SetBehaviour(IEnemyMovement m, IEnemyAttack a)
     {
-        //_movement = m;
+        _movement = m;
         _attack = a;
         return this;
     }

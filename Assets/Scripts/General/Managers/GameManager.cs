@@ -6,6 +6,8 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager instance;
     public PlayerMain player;
+    public Pool<EnemyBase> enemyPool;
+    public EnemyBase enemyPrefab;
     public Pool<Bullet> enemyBulletPool;
     public Bullet enemyBulletPrefab;
     public Pool<Bullet> playerBulletPool;
@@ -27,10 +29,11 @@ public class GameManager : MonoBehaviour
         {
             instance = this;
         }
-        enemyBulletPool = new Pool<Bullet>(new Factory<Bullet>().SetPrefab(enemyBulletPrefab), Bullet.SetState);
+        enemyBulletPool = new Pool<Bullet>(new Factory<Bullet>().SetPrefab(enemyBulletPrefab), Bullet.SetState, 500);
         playerBulletPool = new Pool<Bullet>(new Factory<Bullet>().SetPrefab(playerBulletPrefab), Bullet.SetState);
         playerAOEPool = new Pool<AOE>(new Factory<AOE>().SetPrefab(playerAOEPrefab), AOE.SetState, 30);
         enemyAOEPool = new Pool<AOE>(new Factory<AOE>().SetPrefab(enemyAOEPrefab), AOE.SetState, 30);
+        enemyPool = new Pool<EnemyBase>(new Factory<EnemyBase>().SetPrefab(enemyPrefab), EnemyBase.SetState, 30);
         //activeEnemies = new List<EnemyBase>();
     }
     

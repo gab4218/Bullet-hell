@@ -16,5 +16,6 @@ public class EnemyTeleporter : IEnemyMovement
         if (_t < _cooldown) return;
         _t = 0;
         transform.position = new Vector2(Random.Range(GameManager.instance.mapSize.x, GameManager.instance.mapSize.y), Random.Range(GameManager.instance.mapSize.z, GameManager.instance.mapSize.w));
+        if (Vector2.Distance(transform.position, GameManager.instance.player.transform.position) <= 2) Move(transform, rb, speed);
     }
 }

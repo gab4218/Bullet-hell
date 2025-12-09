@@ -3,8 +3,7 @@ using UnityEngine;
 
 public enum EventType
 {
-    Hit,
-    Miss,
+    RoundClear,
     Death,
     End
 }

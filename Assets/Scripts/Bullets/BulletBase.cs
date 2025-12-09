@@ -2,7 +2,8 @@ using UnityEngine;
 public class BulletBase : IBullet
 {
     protected Vector2 origin;
-    public float damage { get => 1; }
+    private float _damage = 1;
+    public float damage { get => _damage; }
     protected Bullet parent;
     public bool collidable => true;
     public float maxLifeTime = 4f;
@@ -20,6 +21,12 @@ public class BulletBase : IBullet
     public BulletBase SetSpeed(float s = 1)
     {
         speed = s;
+        return this;
+    }
+
+    public BulletBase SetDamage(float d = 1)
+    { 
+        _damage = d;
         return this;
     }
 
@@ -52,7 +59,7 @@ public class BulletBase : IBullet
 
     public void OnUpdate(Transform transform)
     {
-        currentLifeTime += Time.deltaTime;
+        currentLifeTime += Time.deltaTime * speed;
         transform.position += Time.deltaTime * transform.up * speed;
         if (currentLifeTime >= maxLifeTime) parent.End();
         if (rotationalSpeed == 0) return;

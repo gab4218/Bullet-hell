@@ -42,6 +42,10 @@ public class Bullet : MonoBehaviour
         bullet.EndLife();
     }
 
+    public void SetDamage(float d)
+    {
+        ((BulletBase)bullet).SetDamage(d);
+    }
 
     public void Fire()
     {
