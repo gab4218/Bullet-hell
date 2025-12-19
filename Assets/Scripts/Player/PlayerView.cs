@@ -13,10 +13,18 @@ public class PlayerView
 
     private Image _maxHpImage;
 
+    private AudioClip _throwClip;
+
     public PlayerView(PlayerModel model, Animator anim)
     {
         _model = model;
         _anim = anim;
+    }
+
+    public PlayerView SetSound(AudioClip c)
+    {
+        _throwClip = c;
+        return this;
     }
 
     public PlayerView SetHpSize(float s)
@@ -46,6 +54,7 @@ public class PlayerView
     public void Attack()
     {
         _anim.SetTrigger("Hit");
+        SoundSingleton.instance.sfxSource.PlayOneShot(_throwClip);
     }
 
     public void CheckHealth()

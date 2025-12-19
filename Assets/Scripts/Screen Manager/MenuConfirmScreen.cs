@@ -42,11 +42,13 @@ public class MenuConfirmScreen : MonoBehaviour, IScreen
     public void Yes()
     {
         PauseScreen.paused = false;
+        SoundSingleton.instance.Button();
         AsyncLoadManager.instance.LoadScene("Menu");
     }
 
     public void No()
     {
+        SoundSingleton.instance.Button();
         ScreenManager.instance.Pop();
     }
 }

@@ -49,6 +49,7 @@ public class GameManager : MonoBehaviour
 
         enemyDeathCount = 0;
         eyeDeathCount = 0;
+        if (missionImages.Length == 0) return;
         foreach (var i in missionImages)
         {
             i.gameObject.SetActive(false);
@@ -57,6 +58,7 @@ public class GameManager : MonoBehaviour
 
     private void Update()
     {
+        if (roundText == default) return;
         enemyCountText.text = activeEnemies.Count.ToString();
         roundText.text = RoundManager.instance.round.ToString();
 

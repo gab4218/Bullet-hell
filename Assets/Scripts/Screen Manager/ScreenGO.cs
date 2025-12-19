@@ -26,7 +26,7 @@ public class ScreenGO : IScreen
             entry.Key.enabled = entry.Value;
             if (entry.Key.TryGetComponent(out Rigidbody2D rb)) rb.isKinematic = false;
         }
-        SoundSingleton.instance?.musicSource.UnPause();
+        //SoundSingleton.instance?.musicSource.UnPause();
         _priorState.Clear();
         
     }
@@ -48,7 +48,7 @@ public class ScreenGO : IScreen
 
 
         }
-        SoundSingleton.instance?.musicSource.Pause();
+        //SoundSingleton.instance?.musicSource.Pause();
     }
 
     public void Free()

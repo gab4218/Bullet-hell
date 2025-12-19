@@ -5,8 +5,10 @@ public class Options : MonoBehaviour, IScreen
 {
     private Button[] _buttons;
 
-    public void SetMusic(Toggle slider) => SoundManager.instance.UpdateMusicVolume(slider.isOn? 0 : -50);
-    public void SetSFX(Toggle slider) => SoundManager.instance.UpdateSFXVolume(slider.isOn? 0 : -50);
+    [SerializeField] Toggle[] _toggles;
+
+    public void SetMusic(Toggle slider) => SoundManager.instance.UpdateMusicVolume(slider.isOn? -50 : 0);
+    public void SetSFX(Toggle slider) => SoundManager.instance.UpdateSFXVolume(slider.isOn? -50 : 0);
     public void SetMaster(Slider slider) => SoundManager.instance.UpdateMasterVolume(slider.value);
 
     private void Awake()
@@ -40,6 +42,8 @@ public class Options : MonoBehaviour, IScreen
         {
             button.interactable = true;
         }
+        if (SoundManager.instance.GetSFXVolume() < 0) _toggles[0].isOn = true;
+        if (SoundManager.instance.GetMusicVolume() < 0) _toggles[1].isOn = true;
     }
 
     public void Deactivate()
@@ -55,7 +59,11 @@ public class Options : MonoBehaviour, IScreen
         Destroy(gameObject);
     }
 
-    public void Exit() => ScreenManager.instance.Pop();
+    public void Exit()
+    {
+        SoundSingleton.instance.Button();
+        ScreenManager.instance.Pop();
+    }
 
     private void Update()
     {

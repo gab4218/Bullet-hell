@@ -6,7 +6,7 @@ using UnityEngine.UI;
 public class PlayerMain : MonoBehaviour, IHittable
 {
     private PlayerModel _model;
-    private PlayerController _controller;
+    private IController _controller;
     private PlayerView _view;
     public Rigidbody2D rb;
     [SerializeField] private int _maxHP;
@@ -15,7 +15,11 @@ public class PlayerMain : MonoBehaviour, IHittable
     [SerializeField] private Sprite[] _bulletSprites;
     [SerializeField] private Image _hpImage;
     [SerializeField] private Image _maxHpImage;
+    [SerializeField] private SpriteRenderer _spriteRenderer;
     [SerializeField] private float _hpSize = 77;
+    [SerializeField] private JoystickInput _attack, _move;
+    [SerializeField] private AudioClip _hurtSound, _throwSound;
+
 
     public bool hasAOE => _model.aoe;
 
@@ -28,8 +32,14 @@ public class PlayerMain : MonoBehaviour, IHittable
     {
         rb = GetComponent<Rigidbody2D>();
         _model = new PlayerModel(transform, rb).SetSprites(_bulletSprites).SetMaxHealth(_maxHP).SetBaseDamage(_damage).SetSpeed(_speed);
-        _view = new PlayerView(_model, GetComponent<Animator>()).SetHpSize(_hpSize).SetHpImages(_hpImage, _maxHpImage);
-        _controller = new PlayerController(_model, _view);
+        _view = new PlayerView(_model, GetComponent<Animator>()).SetHpSize(_hpSize).SetHpImages(_hpImage, _maxHpImage).SetSound(_throwSound);
+#if UNITY_STANDALONE_WIN
+        _controller = new PlayerControllerPC(_model, _view);
+        _move.gameObject.SetActive(false);
+        _attack.gameObject.SetActive(false);
+#else
+        _controller = new PlayerControllerMobile(_model, _view).SetInputs(_move, _attack);
+#endif
     }
    
 
@@ -108,5 +118,13 @@ public class PlayerMain : MonoBehaviour, IHittable
     public void OnHit(float dmg)
     {
         _model.Hurt((int)dmg);
+        _spriteRenderer.color = Color.red;
+        SoundSingleton.instance.sfxSource.PlayOneShot(_hurtSound);
+        Invoke("DefaultColor", 0.1f);
+    }
+
+    private void DefaultColor()
+    {
+        _spriteRenderer.color = Color.white;
     }
 }

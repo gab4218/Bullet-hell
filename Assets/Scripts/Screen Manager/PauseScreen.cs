@@ -48,14 +48,23 @@ public class PauseScreen : MonoBehaviour, IScreen
         Destroy(gameObject);
     }
 
-    public void Options() => ScreenManager.instance.Push(_optionsName);
+    public void Options()
+    {
+        SoundSingleton.instance.Button();
+        ScreenManager.instance.Push(_optionsName);
+    }
 
     public void Menu()
     {
+        SoundSingleton.instance.Button();
         ScreenManager.instance.Push(_menuName);
     }
 
-    public void Resume() => ScreenManager.instance.Pop();
+    public void Resume()
+    {
+        SoundSingleton.instance.Button();
+        ScreenManager.instance.Pop();
+    }
 
     private void Update()
     {

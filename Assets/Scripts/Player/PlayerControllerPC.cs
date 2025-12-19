@@ -1,13 +1,13 @@
 using UnityEngine;
 
-public class PlayerController
+public class PlayerControllerPC : IController
 {
     private PlayerModel _model;
 
     private PlayerView _view;
 
     public Vector2 dir;
-    public PlayerController(PlayerModel model, PlayerView view)
+    public PlayerControllerPC(PlayerModel model, PlayerView view)
     {
         _model = model; 
         _view = view;
@@ -31,4 +31,9 @@ public class PlayerController
         }
 
     }
+}
+
+public interface IController
+{
+    public void OnUpdate();
 }

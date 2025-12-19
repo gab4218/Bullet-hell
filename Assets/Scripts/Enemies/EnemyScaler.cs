@@ -25,7 +25,8 @@ public class EnemyScaler : MonoBehaviour
 
     private void OnRoundClear(params object[] par)
     {
-        if(RoundManager.instance.round % 4 == 0) hpMult *= scalingFactor;
+        if (RoundManager.instance == default) return;
+        if (RoundManager.instance.round % 4 == 0) hpMult *= scalingFactor;
         enemyCurrency += RoundManager.instance.round / 2;
     }
 }

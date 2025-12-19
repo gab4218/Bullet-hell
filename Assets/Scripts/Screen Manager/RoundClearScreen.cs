@@ -83,6 +83,7 @@ public class RoundClearScreen : MonoBehaviour, IScreen
     public void Free()
     {
         if (!PauseScreen.paused) EventManager.TriggerEvent(EventType.RoundStart);
+        TutorialManager.instance?.Last();
         Destroy(gameObject);
     }
 

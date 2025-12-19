@@ -24,6 +24,11 @@ public class Menu : MonoBehaviour
 
     public void Exit() => ScreenManager.instance.Push("ExitScreen");
 
+    public void Tutorial()
+    {
+        AsyncLoadManager.instance.LoadScene("Tutorial");
+    }
+
     private void Start()
     {
         ScreenManager.instance.Push(new ScreenGO(transform));

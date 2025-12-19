@@ -1,5 +1,6 @@
 using System;
 using System.Collections;
+using System.Security.Cryptography;
 using TMPro;
 using UnityEngine;
 
@@ -17,6 +18,9 @@ public class StaminaManager : MonoBehaviour
     [SerializeField] private DateTimeLocalizationSelector _localization;
     [SerializeField] private GameObject _adButton;
     [SerializeField] private TMP_Text _staminaText, _timerText;
+    [SerializeField] private string _notifTitle, _notifText;
+    [SerializeField] IconSelector _smallIcon = IconSelector.icon_0;
+    [SerializeField] IconSelector _largeIcon = IconSelector.icon_1;
 
     private bool _charging;
 
@@ -24,6 +28,8 @@ public class StaminaManager : MonoBehaviour
 
     public static StaminaManager instance;
 
+    private int _staminaID;
+    private int _christmasID;
 
     private void Awake()
     {
@@ -115,8 +121,9 @@ public class StaminaManager : MonoBehaviour
         {
             currentStamina--;
 
-            
 
+            NotificationManager.Instance.CancelNotification(_staminaID);
+            DisplayNotification();
             UpdateTexts();
 
             if (!_charging)
@@ -140,6 +147,13 @@ public class StaminaManager : MonoBehaviour
         UpdateTexts();
     }
 
+    void DisplayNotification()
+    {
+        TimeSpan time = _nextTime - Localizator(_localization);
+        float calc = _maxStamina - (currentStamina + 1) * _timePerStamina + (float)time.TotalSeconds + 1;
+        DateTime fireTime = AddTime(Localizator(_localization), calc);
+        _staminaID = NotificationManager.Instance.DisplayNotification(_notifTitle, _notifText, _smallIcon, _largeIcon, fireTime);
+    }
 
     DateTime AddTime(DateTime time, float add) => time.AddSeconds(add);
 
@@ -159,6 +173,8 @@ public class StaminaManager : MonoBehaviour
     void SaveData()
     {
         PlayerPrefs.SetInt("currentStamina", currentStamina);
+        PlayerPrefs.SetInt("notifStamina", _staminaID);
+        PlayerPrefs.SetInt("notifChristmas", _christmasID);
         PlayerPrefs.SetString("nextStamina", _nextTime.ToString());
         PlayerPrefs.SetString("lastStamina", _lastTime.ToString());
     }
@@ -166,6 +182,8 @@ public class StaminaManager : MonoBehaviour
     void LoadData()
     {
         currentStamina = PlayerPrefs.GetInt("currentStamina", _maxStamina);
+        if (PlayerPrefs.HasKey("notifStamina")) _staminaID = PlayerPrefs.GetInt("notifStamina");
+        if (PlayerPrefs.HasKey("notifChristmas")) _christmasID = PlayerPrefs.GetInt("notifChristmas");
         _nextTime = StringToDateTime(PlayerPrefs.GetString("nextStamina"));
         _lastTime = StringToDateTime(PlayerPrefs.GetString("lastStamina"));
     }
@@ -181,5 +199,10 @@ public class StaminaManager : MonoBehaviour
     private void OnApplicationFocus(bool focus)
     {
         if (!focus) SaveData();
+    }
+
+    private void OnApplicationQuit()
+    {
+        SaveData();
     }
 }

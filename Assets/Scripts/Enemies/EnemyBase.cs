@@ -121,5 +121,15 @@ public class EnemyBase : MonoBehaviour, IHittable
             if (_attack is EnemySeekingBurst) GameManager.instance.eyeDeathCount++;
             _parent.Return(this);
         }
+        else
+        {
+            _sRenderer.color = Color.red;
+            Invoke("DefaultColor", 0.1f);
+        }
+    }
+
+    private void DefaultColor()
+    {
+        _sRenderer.color = Color.white;
     }
 }

@@ -50,17 +50,17 @@ public class SoundManager : MonoBehaviour
 
     public float GetMusicVolume()
     {
-        mixer.GetFloat("MusicVolume", out float t);
+        mixer.GetFloat("MusicVol", out float t);
         return t;
     }
     public float GetSFXVolume()
     {
-        mixer.GetFloat("SFXVolume", out float t);
+        mixer.GetFloat("SFXVol", out float t);
         return t;
     }
     public float GetMasterVolume()
     {
-        mixer.GetFloat("MusicVolume", out float t);
+        mixer.GetFloat("MasterVolume", out float t);
         return t;
     }
 }

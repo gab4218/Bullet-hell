@@ -10,6 +10,7 @@ public class SoundSingleton : MonoBehaviour
     public AudioClip hitSound;
     public AudioClip missSound;
     public AudioClip deathSound;
+    public AudioClip music;
     public Material material;
     private Color _startColor1, _startColor2;
 
@@ -30,8 +31,10 @@ public class SoundSingleton : MonoBehaviour
 
     private void Start()
     {
-        EventManager.Subscribe(EventType.Death, Death);
-        EventManager.Subscribe(EventType.End, End);
+        //EventManager.Subscribe(EventType.Death, Death);
+        //EventManager.Subscribe(EventType.End, End);
+        musicSource.clip = music;
+        musicSource.Play();
     }
 
     public void Button()
