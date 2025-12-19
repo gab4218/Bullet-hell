@@ -3,7 +3,7 @@ using TMPro;
 using UnityEngine;
 using UnityEngine.UI;
 
-public class ScreenGO : MonoBehaviour, IScreen
+public class ScreenGO : IScreen
 {
     Dictionary<Behaviour, bool> _priorState = new();
 
@@ -24,7 +24,7 @@ public class ScreenGO : MonoBehaviour, IScreen
         foreach (var entry in _priorState)
         {
             entry.Key.enabled = entry.Value;
-            if (entry.Key.TryGetComponent(out Rigidbody rb)) rb.isKinematic = false;
+            if (entry.Key.TryGetComponent(out Rigidbody2D rb)) rb.isKinematic = false;
         }
         SoundSingleton.instance?.musicSource.UnPause();
         _priorState.Clear();
@@ -37,10 +37,15 @@ public class ScreenGO : MonoBehaviour, IScreen
         foreach (var b in _root.GetComponentsInChildren<Behaviour>())
         {
             Debug.Log("asas");
-            if (b is Canvas || b is CanvasScaler || b is Image || b == this || b is Camera || b is TMP_Text || b is AudioSource || b is AudioListener) continue;
+            if (b is Canvas || b is CanvasScaler || b is Image || b is Camera || b is TMP_Text || b is AudioSource || b is AudioListener) continue;
             _priorState.Add(b, b.enabled);
             b.enabled = false;
-            if(b.TryGetComponent(out Rigidbody rb)) rb.isKinematic = false;
+            if (b.TryGetComponent(out Rigidbody2D rb))
+            {
+                rb.velocity = Vector3.zero;
+                rb.isKinematic = false;
+            }
+
 
         }
         SoundSingleton.instance?.musicSource.Pause();
@@ -48,6 +53,6 @@ public class ScreenGO : MonoBehaviour, IScreen
 
     public void Free()
     {
-        Destroy(_root.gameObject);
+        GameObject.Destroy(_root.gameObject);
     }
 }

@@ -1,18 +1,24 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-public class EnemyBase : MonoBehaviour
+public class EnemyBase : MonoBehaviour, IHittable
 {
     private float _speed = 2f;
     private float _cooldown = 1f;
-    private float _bulletSpeed = 2f;
-    private float _hpMultiplier = 1f;
+    private float _bulletSpeed = 5f;
+    private float _coinDropChance = 0.05f;
+    public float maxHP = 4;
+    public float currentHP = 4;
     private Sprite _sprite;
     private SpriteRenderer _sRenderer;
+    [SerializeField] private Animator _anim;
     private IEnemyMovement _movement;
     private IEnemyAttack _attack;
     private Rigidbody2D _rb;
-    private CircleCollider2D _circleCollider;
+    private Collider2D _circleCollider;
+    private Pool<EnemyBase> _parent;
+    private GameObject _coin;
+    private float _baseHP;
 
     public EnemyBase SetSpeed(float speed)
     {
@@ -27,15 +33,42 @@ public class EnemyBase : MonoBehaviour
         return this;
     }
 
+    public EnemyBase SetAnimator(RuntimeAnimatorController c)
+    {
+        if (_anim == null) _anim = GetComponent<Animator>();
+        _anim.runtimeAnimatorController = c;
+        return this;
+    }
+
     public EnemyBase SetCooldown(float cd)
     {
         _cooldown = cd;
         return this;
     }
 
+    public EnemyBase SetBaseHP(float hp)
+    {
+        _baseHP = hp;
+        return this;
+    }
+
     public EnemyBase SetHPMultiplier(float hpMult)
     {
-        _hpMultiplier = hpMult;
+        maxHP = _baseHP * hpMult * EnemyScaler.instance.hpMult;
+        currentHP = maxHP;
+        return this;
+    }
+
+    public EnemyBase SetCoinDropChance(float c)
+    {
+        _coinDropChance = c;
+        Debug.Log("coi " + _coinDropChance);
+        return this;
+    }
+
+    public EnemyBase SetCoin(GameObject c)
+    {
+        _coin = c;
         return this;
     }
 
@@ -51,17 +84,16 @@ public class EnemyBase : MonoBehaviour
     {
         _sRenderer = GetComponent<SpriteRenderer>();
         _rb = GetComponent<Rigidbody2D>();
-        _attack = new EnemyRadialAttack();
-        _movement = new EnemyBlindChase();
-        _circleCollider = GetComponent<CircleCollider2D>();
+        //_attack = new EnemyRadialAttack();
+        //_movement = new EnemyBlindChase();
+        _circleCollider = GetComponent<Collider2D>();
     }
 
     
     void Update()
     {
         _movement.Move(transform, _rb, _speed);
-        _attack.Attack(transform, _cooldown, _bulletSpeed);
-        transform.position += Separate(GameManager.instance.activeEnemies, _circleCollider.radius + 0.1f);
+        _attack.Attack(transform, _cooldown, _bulletSpeed, _anim);
     }
 
     public static void SetState(EnemyBase e, bool state)
@@ -77,24 +109,17 @@ public class EnemyBase : MonoBehaviour
         }
     }
 
-    private Vector3 Separate(List<EnemyBase> enemies, float radius)
+    public void SetCreator(Pool<EnemyBase> p) => _parent = p;
+
+    public void OnHit(float dmg)
     {
-        Vector3 desiredVel = Vector3.zero;
-        foreach (EnemyBase eb in enemies)
+        currentHP -= dmg;
+        if (currentHP <= 0)
         {
-            if (eb == this) continue;
-
-            var dir = transform.position - eb.transform.position;
-            if (dir.sqrMagnitude > radius * radius) continue;
-
-            desiredVel += dir;
+            if (Random.Range(0, 1f) <= _coinDropChance) Instantiate(_coin, transform.position, Quaternion.identity);
+            GameManager.instance.enemyDeathCount++;
+            if (_attack is EnemySeekingBurst) GameManager.instance.eyeDeathCount++;
+            _parent.Return(this);
         }
-
-        if (desiredVel == Vector3.zero) return desiredVel;
-
-        desiredVel = desiredVel.normalized * _speed;
-
-        return desiredVel;
-
     }
 }

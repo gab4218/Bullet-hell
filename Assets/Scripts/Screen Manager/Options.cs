@@ -1,11 +1,23 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Options : MonoBehaviour
+public class Options : MonoBehaviour, IScreen
 {
-    public void SetMusic(Slider slider) => SoundManager.instance.UpdateMusicVolume(slider.value);
-    public void SetSFX(Slider slider) => SoundManager.instance.UpdateSFXVolume(slider.value);
+    private Button[] _buttons;
+
+    public void SetMusic(Toggle slider) => SoundManager.instance.UpdateMusicVolume(slider.isOn? 0 : -50);
+    public void SetSFX(Toggle slider) => SoundManager.instance.UpdateSFXVolume(slider.isOn? 0 : -50);
     public void SetMaster(Slider slider) => SoundManager.instance.UpdateMasterVolume(slider.value);
+
+    private void Awake()
+    {
+        _buttons = GetComponentsInChildren<Button>();
+
+        foreach (Button button in _buttons)
+        {
+            button.interactable = false;
+        }
+    }
 
     public void Save()
     {
@@ -20,5 +32,33 @@ public class Options : MonoBehaviour
         //}
         //data.allCharts = ac;
         //SaveManager.SaveData(data);
+    }
+
+    public void Activate()
+    {
+        foreach (Button button in _buttons)
+        {
+            button.interactable = true;
+        }
+    }
+
+    public void Deactivate()
+    {
+        foreach (Button button in _buttons)
+        {
+            button.interactable = false;
+        }
+    }
+
+    public void Free()
+    {
+        Destroy(gameObject);
+    }
+
+    public void Exit() => ScreenManager.instance.Pop();
+
+    private void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.Escape)) Exit();
     }
 }

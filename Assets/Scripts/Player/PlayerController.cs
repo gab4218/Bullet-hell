@@ -1,34 +1,33 @@
-using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
 
 public class PlayerController
 {
     private PlayerModel _model;
-    public PlayerController(PlayerModel model)
+
+    private PlayerView _view;
+
+    public Vector2 dir;
+    public PlayerController(PlayerModel model, PlayerView view)
     {
         _model = model; 
+        _view = view;
     }
 
     public void OnUpdate()
     {
         if (Input.GetKey(KeyCode.Mouse0))
         {
+            if(_model.canAttack) _view.Attack();
             _model.Shoot(Camera.main.ScreenToWorldPoint(Input.mousePosition) - _model.tranform.position);
         }
-        var dir = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
+
+        dir = new Vector2(Input.GetAxisRaw("Horizontal"), Input.GetAxisRaw("Vertical"));
         _model.Move(dir);
-        if (Input.GetKeyDown(KeyCode.M))
+        _view.Move(dir);
+
+        if (Input.GetKeyDown(KeyCode.G))
         {
-            _model.swirly = !_model.swirly;
-        }
-        if (Input.GetKeyDown(KeyCode.N))
-        {
-            _model.aoe = !_model.aoe;
-        }
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            _model.seeking = !_model.seeking;
+            _model.Piercing();
         }
 
     }

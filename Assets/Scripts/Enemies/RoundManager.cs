@@ -1,26 +1,33 @@
 using System.Collections.Generic;
-using Unity.VisualScripting;
+using Unity.Services.RemoteConfig;
 using UnityEngine;
 
 
 public enum EnemyTypes
 {
-    TP_StarSpin, TP_StarNormal, Follower_Burst, Surround_Radial, Surround_Seeking, Random_Star, Static_Spinning
+    TP_StarSpin, TP_StarNormal, Surround_AOE, Follow_Radial, Surround_Seeking, Static_Spinning
 }
 public class RoundManager : MonoBehaviour
 {
     public static RoundManager instance;
+    public GameObject coin;
     public int round = 0;
+    private float _coinDropChance = 0.05f;
+    private float _baseEnemyHP = 5f;
     public Dictionary<EnemyTypes, int> prices = new Dictionary<EnemyTypes, int>()
     {
         { EnemyTypes.TP_StarSpin, 2 },
         { EnemyTypes.TP_StarNormal, 1 },
-        { EnemyTypes.Follower_Burst, 3 },
-        { EnemyTypes.Surround_Radial, 4 },
+        { EnemyTypes.Surround_AOE, 3 },
+        { EnemyTypes.Follow_Radial, 4 },
         { EnemyTypes.Surround_Seeking, 5 },
-        { EnemyTypes.Random_Star, 1 },
         { EnemyTypes.Static_Spinning, 1 }
     };
+
+    public RuntimeAnimatorController[] enemyAnimators;
+    public Sprite[] enemyBulletSprites;
+
+    private bool _goodToGo = true;
 
     private void Awake()
     {
@@ -37,30 +44,48 @@ public class RoundManager : MonoBehaviour
 
     private void Start()
     {
+        EventManager.Subscribe(EventType.RoundStart, StartRound);
+        EventManager.TriggerEvent(EventType.RoundStart);
+        RemoteConfigService.Instance.FetchCompleted += ChangeChance;
+        RemoteConfigService.Instance.FetchCompleted += ChangeHP;
+        _coinDropChance = RemoteConfigService.Instance.appConfig.GetFloat("CoinDropChance");
+        _baseEnemyHP = 1;
 
+    }
+    private void ChangeChance(ConfigResponse configResponse)
+    {
+        _coinDropChance = RemoteConfigService.Instance.appConfig.GetFloat("CoinDropChance");
+        Debug.Log("cd = " + _coinDropChance);
+    }
+
+    private void ChangeHP(ConfigResponse configResponse)
+    {
+        _baseEnemyHP = RemoteConfigService.Instance.appConfig.GetFloat("BaseEnemyHP");
     }
 
     private void Update()
     {
-        if (GameManager.instance.activeEnemies.Count <= 0)
+        if (GameManager.instance.activeEnemies.Count <= 0 && _goodToGo)
         {
-            EventManager.TriggerEvent(EventType.RoundClear);
+            _goodToGo = false;
+            ScreenManager.instance.Push("RoundClear");
         }
     }
 
-    private void StartRound()
+    private void StartRound(params object[] p)
     {
         round++;
+        _goodToGo = true;
         int currentPrice = 0;
         while (currentPrice < EnemyScaler.instance.enemyCurrency)
         {
-            EnemyTypes t = (EnemyTypes)Random.Range(0, 7);
+            EnemyTypes t = (EnemyTypes)Random.Range(0, 6);
 
             if(round < 8)
             {
                 if(round < 5)
                 {
-                    if (t == EnemyTypes.Follower_Burst || t == EnemyTypes.TP_StarSpin) continue;
+                    if (t == EnemyTypes.Surround_AOE || t == EnemyTypes.TP_StarSpin) continue;
                 }
                 if (t == EnemyTypes.Surround_Seeking) continue;
             }
@@ -74,31 +99,31 @@ public class RoundManager : MonoBehaviour
             }
 
             var e = GameManager.instance.enemyPool.GetObject();
-
+            e.SetCoin(coin).SetCoinDropChance(_coinDropChance).SetBaseHP(_baseEnemyHP).SetCreator(GameManager.instance.enemyPool);
+            
+            e.SetAnimator(enemyAnimators[(int)t]);
             SetPos(e.transform);
-
             switch (t)
             {
-                case EnemyTypes.Follower_Burst:
-                    e.SetBehaviour(new EnemyBlindChase(), new EnemySingleBurst());
+                case EnemyTypes.Surround_AOE:
+                    e.SetBehaviour(new EnemySurround(), new EnemySingleBurst(enemyBulletSprites[(int)t])).SetSpeed(3).SetHPMultiplier(1.25f).SetCooldown(4);
                     break;
                 case EnemyTypes.TP_StarSpin:
-                    e.SetBehaviour(new EnemyTeleporter(), new EnemyStarSpin());
+                    e.SetBehaviour(new EnemyTeleporter(), new EnemyStarSpin(enemyBulletSprites[(int)t])).SetSpeed(1).SetHPMultiplier(1.25f).SetCooldown(2);
                     break;
                 case EnemyTypes.Static_Spinning:
-                    e.SetBehaviour(new EnemyStatic(), new EnemyConstantSpin());
+                    Debug.Log("spin");
+                    e.SetBehaviour(new EnemyStatic(), new EnemyConstantSpin(enemyBulletSprites[(int)t])).SetSpeed(0).SetHPMultiplier(2f).SetCooldown(0.2f);
                     break;
                 case EnemyTypes.TP_StarNormal:
-                    e.SetBehaviour(new EnemyTeleporter(), new EnemyStarBurst());
+                    e.SetBehaviour(new EnemyTeleporter(), new EnemyStarBurst(enemyBulletSprites[(int)t])).SetSpeed(1).SetHPMultiplier(1f).SetCooldown(2);
                     break;
-                case EnemyTypes.Surround_Radial:
-                    e.SetBehaviour(new EnemySurround(), new EnemyRadialAttack());
-                    break;
-                case EnemyTypes.Random_Star:
-                    e.SetBehaviour(new EnemyRandomMovement(), new EnemyStarBurst());
+                case EnemyTypes.Follow_Radial:
+                    Debug.Log("radial");
+                    e.SetBehaviour(new EnemySurround(), new EnemyRadialAttack(enemyBulletSprites[(int)t])).SetSpeed(3).SetHPMultiplier(1f).SetCooldown(3);
                     break;
                 case EnemyTypes.Surround_Seeking:
-                    e.SetBehaviour(new EnemySurround(), new EnemySeekingBurst());
+                    e.SetBehaviour(new EnemySurround(), new EnemySeekingBurst(enemyBulletSprites[(int)t])).SetSpeed(2).SetHPMultiplier(2f).SetCooldown(4);
                     break;
                 default:
                     break;

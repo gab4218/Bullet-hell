@@ -12,15 +12,16 @@ public class Bullet : MonoBehaviour
 
     public bool piercing = false;
 
-    private Rigidbody2D rb;
+    private Rigidbody2D _rb;
 
-    private Pool<Bullet> creator;
+    private Pool<Bullet> _creator;
 
-    private SpriteRenderer spriteRenderer;
+    private SpriteRenderer _spriteRenderer;
 
     private void Start()
     {
-        rb = GetComponent<Rigidbody2D>(); 
+        _rb = GetComponent<Rigidbody2D>(); 
+        _spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     protected virtual void OnTriggerEnter2D(Collider2D other)
@@ -29,7 +30,8 @@ public class Bullet : MonoBehaviour
         {
             bullet.OnHit(target);
         }
-        if (bullet.collidable) bullet.EndLife();
+        if (!piercing) bullet.EndLife();
+        
     }
 
     private void Update()
@@ -47,10 +49,6 @@ public class Bullet : MonoBehaviour
         ((BulletBase)bullet).SetDamage(d);
     }
 
-    public void Fire()
-    {
-        bullet = new BulletFire(bullet);
-    }
     public void Swirl()
     {
         bullet = new BulletSwirly(bullet);
@@ -63,6 +61,7 @@ public class Bullet : MonoBehaviour
         if (state)
         {
             b.bullet = new BulletBase(b);
+            b.piercing = false;
         }
     }
 
@@ -73,7 +72,8 @@ public class Bullet : MonoBehaviour
 
     public void UpdateSprite(Sprite spr)
     {
-        spriteRenderer.sprite = spr;
+        if (_spriteRenderer == null) _spriteRenderer = GetComponent<SpriteRenderer>();
+        _spriteRenderer.sprite = spr;
     }
 
     public void Shoot(Vector2 dir, Vector2 origin)
@@ -87,20 +87,20 @@ public class Bullet : MonoBehaviour
         bullet = new BulletAOE(bullet, p, transform);
         Debug.Log("asd");
     }
-    public void Seeking()
+    public void Seeking(bool enemy = false)
     {
-        bullet = new BulletSeeking(bullet, false);
+        bullet = new BulletSeeking(bullet, enemy);
         Debug.Log("ssds");
     }
     public void SetCreator(Pool<Bullet> p)
     {
-        creator = p;
+        _creator = p;
     }
 
     public void Return()
     {
         Debug.Log("ah");
-        creator.Return(this);
+        _creator.Return(this);
     }
     
 }

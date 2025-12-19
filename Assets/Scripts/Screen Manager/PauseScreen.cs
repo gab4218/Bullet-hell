@@ -11,6 +11,8 @@ public class PauseScreen : MonoBehaviour, IScreen
 
     public static bool paused = false;
 
+    private bool _enabled = false;
+
     private void Awake()
     {
         _buttons = GetComponentsInChildren<Button>();
@@ -28,6 +30,7 @@ public class PauseScreen : MonoBehaviour, IScreen
         {
             button.interactable = true;
         }
+        _enabled = true;
     }
 
     public void Deactivate()
@@ -36,6 +39,7 @@ public class PauseScreen : MonoBehaviour, IScreen
         {
             button.interactable = false;
         }
+        _enabled = false;
     }
 
     public void Free()
@@ -48,15 +52,19 @@ public class PauseScreen : MonoBehaviour, IScreen
 
     public void Menu()
     {
-        EventManager.TriggerEvent(EventType.End, false);
-        paused = false;
-        SceneManager.LoadScene(_menuName);
+        ScreenManager.instance.Push(_menuName);
     }
 
     public void Resume() => ScreenManager.instance.Pop();
 
-    
-    
+    private void Update()
+    {
+        if (_enabled)
+        {
+            if (Input.GetKeyDown(KeyCode.Escape)) ScreenManager.instance.Pop();
+        }
+    }
+
     //public void ChangeLanguage() =>
 
 }

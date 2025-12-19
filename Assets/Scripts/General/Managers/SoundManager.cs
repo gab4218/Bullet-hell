@@ -1,5 +1,4 @@
 using UnityEngine;
-using static UnityEngine.Rendering.DebugUI;
 
 public class SoundManager : MonoBehaviour
 {
@@ -20,7 +19,7 @@ public class SoundManager : MonoBehaviour
 
     public void UpdateMasterVolume(float value)
     {
-        mixer.SetFloat("MasterVolume", value);
+        mixer.SetFloat("MasterVol", value);
         if (!SoundSingleton.instance.sfxSource.isPlaying)
         {
             SoundSingleton.instance.Button();
@@ -29,14 +28,14 @@ public class SoundManager : MonoBehaviour
 
     public void UpdateMusicVolume(float value)
     {
-        mixer.SetFloat("MusicVolume", value);
-        if (value <= -25f) mixer.SetFloat("MusicVolume", -80f); 
+        mixer.SetFloat("MusicVol", value);
+        //if (value <= -25f) mixer.SetFloat("MusicVolume", -80f); 
     }
 
     public void UpdateSFXVolume(float value)
     {
-        mixer.SetFloat("SFXVolume", value);
-        if(value <= -25f) mixer.SetFloat("SFXVolume", -80f);
+        mixer.SetFloat("SFXVol", value);
+        //if(value <= -25f) mixer.SetFloat("SFXVolume", -80f);
         if (!SoundSingleton.instance.sfxSource.isPlaying)
         {
             SoundSingleton.instance.Button();

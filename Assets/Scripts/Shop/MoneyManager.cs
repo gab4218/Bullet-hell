@@ -6,6 +6,7 @@ public class MoneyManager : MonoBehaviour
 {
     public static MoneyManager instance;
     public static int money;
+    public static int newMoney;
     public List<TMP_Text> text;
     [SerializeField] private AudioClip _goodClip, _badClip;
 
@@ -46,14 +47,17 @@ public class MoneyManager : MonoBehaviour
 
     public void Purchase(ShopEntry entry)
     {
-        if (entry.price > money)
+        if (!DevModeDetector.instance.devMode)
         {
-            SoundSingleton.instance.sfxSource.PlayOneShot(_badClip);
-            return;
+            if (entry.price > money)
+            {
+                SoundSingleton.instance.sfxSource.PlayOneShot(_badClip);
+                return;
+            }
+            money -= entry.price;
         }
-        money -= entry.price;
-        Destroy(entry);
-        InventoryManager.unlockedCosmetics[entry.item] = true;
+        //Destroy(entry);
+        InventoryManager.unlockedItems[entry.item] = true;
         SoundSingleton.instance.sfxSource.PlayOneShot(_goodClip);
     }
 }

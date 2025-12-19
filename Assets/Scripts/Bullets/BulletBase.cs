@@ -78,7 +78,3 @@ public class BulletBase : IBullet
 
 }
 
-public enum DamageTypes
-{
-    Normal, Fire, Ice, Poison
-}

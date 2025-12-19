@@ -1,57 +1,92 @@
-using System.Collections;
-using System.Collections.Generic;
+using TMPro;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class Menu : MonoBehaviour
 {
     [SerializeField] private string _optionsName = "Options";
     [SerializeField] private string _shopName = "Shop";
-    public static bool saved = false;
+    [SerializeField] private AudioClip _badClip;
+    [SerializeField] private TMP_Text _moneyText;
+    public static bool loaded = false;
 
     private void Awake()
     {
-        if (saved) return;
+        if (loaded) return;
 
-        //Debug.Log("loading");
-        //SaveData data = SaveManager.LoadGame();
-        //saved = true;
-        //ChartDataHolder.allCharts = new();
-        //MoneyManager.money = data.money;
-        //InventoryManager.unlockedCosmetics = data.unlockedCosmetics;
-        //if (data.allCharts.Length <= 0) return;
-        //foreach (var c in data.allCharts) ChartDataHolder.allCharts.Add(JsonUtility.FromJson<ChartData>(c));
+        Debug.Log("loading");
+        SaveData data = SaveManager.LoadGame();
+        loaded = true;
+        MoneyManager.money = data.money;
+        InventoryManager.unlockedItems = data.unlockedCosmetics;
+
     }
 
-    public void Exit() => Application.Quit();
+    public void Exit() => ScreenManager.instance.Push("ExitScreen");
+
+    private void Start()
+    {
+        ScreenManager.instance.Push(new ScreenGO(transform));
+        if (MoneyManager.newMoney > 0) ScreenManager.instance.Push("Money");
+    }
 
     private void Update()
     {
-        //if (Input.GetKeyDown(KeyCode.H))
-        //{
-        //    Debug.Log("loading");
-        //    SaveData data = SaveManager.LoadGame();
-        //    saved = true;
-        //    ChartDataHolder.allCharts = new();
-        //    foreach (var c in data.allCharts) ChartDataHolder.allCharts.Add(JsonUtility.FromJson<ChartData>(c));
-        //    MoneyManager.money = data.money;
-        //    InventoryManager.unlockedCosmetics = data.unlockedCosmetics;
-        //}
+        if (Input.GetKeyDown(KeyCode.H))
+        {
+            Debug.Log("loading");
+            SaveData data = SaveManager.LoadGame();
+            loaded = true;
+            MoneyManager.money = data.money;
+            InventoryManager.unlockedItems = data.unlockedCosmetics;
+        }
+        //_moneyText.text = MoneyManager.money.ToString();
     }
 
     public void DeleteAll()
     {
-        //SaveManager.DeleteSaveData();
-        //SaveData data = SaveManager.LoadGame();
-        //Debug.Log("loading");
-        //saved = true;
-        //ChartDataHolder.allCharts = new();
-        ////foreach (var c in data.allCharts) ChartDataHolder.allCharts.Add(JsonUtility.FromJson<ChartData>(c));
-        //MoneyManager.money = data.money;
-        //InventoryManager.unlockedCosmetics = data.unlockedCosmetics;
+        ScreenManager.instance.Push("Delete");
 
     }
 
     public void Options() => ScreenManager.instance.Push(_optionsName);
 
     public void Shop() => ScreenManager.instance.Push(_shopName);
+
+    public void Play()
+    {
+        if (StaminaManager.instance.currentStamina <= 0)
+        {
+            SoundSingleton.instance.sfxSource.PlayOneShot(_badClip);
+        }
+        else
+        {
+            StaminaManager.instance.UseStamina();
+            AsyncLoadManager.instance.LoadScene("Game");
+        }
+    }
+
+
+    private void OnApplicationQuit() => Save();
+
+    private void OnApplicationPause(bool pause)
+    {
+        if (pause) Save();
+    }
+
+    public void Pause() => ScreenManager.instance.Push("Pause");
+
+    private void OnApplicationFocus(bool focus)
+    {
+        if (!focus) Save();
+    }
+
+    private void Save()
+    {
+        SaveData data = new();
+        data.money = MoneyManager.money;
+        data.unlockedCosmetics = InventoryManager.unlockedItems;
+        SaveManager.SaveData(data);
+    }
+
 }

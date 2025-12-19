@@ -4,7 +4,11 @@ public class EnemyConstantSpin : IEnemyAttack
 {
     private float _cd = 0;
     private int _i = 0;
-    public void Attack(Transform transform, float cooldown, float speed)
+    private Sprite _bulletSprite;
+
+    public EnemyConstantSpin(Sprite spr) => _bulletSprite = spr;
+
+    public void Attack(Transform transform, float cooldown, float speed, Animator anim)
     {
         _cd += Time.deltaTime;
         if (_cd < cooldown) return;
@@ -14,6 +18,7 @@ public class EnemyConstantSpin : IEnemyAttack
         var b = GameManager.instance.enemyBulletPool.GetObject();
         b.rotationalSpeed = 0;
         b.speed = speed;
+        b.UpdateSprite(_bulletSprite);
         b.SetCreator(GameManager.instance.enemyBulletPool);
 
         ((BulletBase)b.bullet).SetLifetime(8).SetSpeed(speed);

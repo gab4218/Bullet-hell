@@ -13,6 +13,7 @@ public class EnemyTeleporter : IEnemyMovement
     public void Move(Transform transform, Rigidbody2D rb, float speed)
     {
         _t += Time.deltaTime * speed;
+        rb.velocity = Vector3.zero;
         if (_t < _cooldown) return;
         _t = 0;
         transform.position = new Vector2(Random.Range(GameManager.instance.mapSize.x, GameManager.instance.mapSize.y), Random.Range(GameManager.instance.mapSize.z, GameManager.instance.mapSize.w));

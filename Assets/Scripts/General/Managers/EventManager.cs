@@ -3,7 +3,7 @@ using UnityEngine;
 
 public enum EventType
 {
-    RoundClear,
+    RoundStart,
     Death,
     End
 }
@@ -59,7 +59,10 @@ public class EventManager
     }
 
     public static void TriggerEvent(EventType type) => TriggerEvent(type, null);
-    
-    public static void ClearEvents(params object[] paramContainer) => _events.Clear();
+
+    public static void ClearEvents(params object[] paramContainer)
+    {
+        _events?.Clear();
+    }
 
 }

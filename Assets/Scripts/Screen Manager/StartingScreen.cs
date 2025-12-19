@@ -2,11 +2,11 @@ using UnityEngine;
 
 public class StartingScreen : MonoBehaviour
 {
-    [SerializeField] private ScreenGO _startingScreen;
+    [SerializeField] private Transform _startingScreen;
 
     private void Start()
     {
-        ScreenManager.instance.Push(_startingScreen);
+        ScreenManager.instance.Push(new ScreenGO(_startingScreen));
     }
 
     private void Update()
@@ -17,36 +17,32 @@ public class StartingScreen : MonoBehaviour
             {
                 ScreenManager.instance.Clear();
             }
+            else
+            {
+                ScreenManager.instance.Push("Pause");
+            }
         }
     }
 
-    //private void OnApplicationQuit() => Save();
+    private void OnApplicationQuit() => Save();
 
     private void OnApplicationPause(bool pause)
     {
-        //if(pause) Save();
+        if(pause) Save();
     }
 
     public void Pause() => ScreenManager.instance.Push("Pause");
 
     private void OnApplicationFocus(bool focus)
     {
-        //if(!focus) Save();
+        if(!focus) Save();
     }
 
-    //private void Save()
-    //{
-    //    SaveData data = new();
-    //    data.money = MoneyManager.money;
-    //    data.unlockedCosmetics = InventoryManager.unlockedCosmetics;
-    //    //ChartDataHolder.instance.Save();
-    //    string[] ac = new string[ChartDataHolder.allCharts.Count];
-    //    for (int i = 0; i < ac.Length; i++)
-    //    {
-    //        ac[i] = JsonUtility.ToJson(ChartDataHolder.allCharts[i]);
-    //    }
-    //    data.allCharts = ac;
-    //    Debug.Log(ac.Length);
-    //    SaveManager.SaveData(data);
-    //}
+    private void Save()
+    {
+        SaveData data = new();
+        data.money = MoneyManager.money;
+        data.unlockedCosmetics = InventoryManager.unlockedItems;
+        SaveManager.SaveData(data);
+    }
 }

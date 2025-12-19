@@ -20,12 +20,12 @@ public class EnemyScaler : MonoBehaviour
         {
             instance = this;
         }
-        EventManager.Subscribe(EventType.RoundClear, OnRoundClear);
+        EventManager.Subscribe(EventType.RoundStart, OnRoundClear);
     }
 
     private void OnRoundClear(params object[] par)
     {
-        hpMult *= scalingFactor;
-        enemyCurrency += RoundManager.instance.round;
+        if(RoundManager.instance.round % 4 == 0) hpMult *= scalingFactor;
+        enemyCurrency += RoundManager.instance.round / 2;
     }
 }

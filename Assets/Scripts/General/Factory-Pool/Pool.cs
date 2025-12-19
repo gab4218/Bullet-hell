@@ -6,16 +6,17 @@ public class Pool<T>
 {
     public delegate T FactoryMethod();
 
-    FactoryMethod _factory;
+    private FactoryMethod _factory;
 
-    Action<T, bool> _setState;
+    private Action<T, bool> _setState;
 
-    List<T> _pool = new();
+    private List<T> _pool = new();
 
     public Pool(FactoryMethod factory, Action<T, bool> enabler, int startCount = 100)
     {
         _factory = factory;
         _setState = enabler;
+
         for(int i = 0; i < startCount; i++)
         {
             var obj = _factory();
