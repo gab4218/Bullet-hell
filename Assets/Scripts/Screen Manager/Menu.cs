@@ -32,7 +32,7 @@ public class Menu : MonoBehaviour
     private void Start()
     {
         ScreenManager.instance.Push(new ScreenGO(transform));
-        if (MoneyManager.newMoney > 0) ScreenManager.instance.Push("Money");
+        if (MoneyManager.newMoney > 0) ScreenManager.instance.Push("MoneyScreen");
     }
 
     private void Update()

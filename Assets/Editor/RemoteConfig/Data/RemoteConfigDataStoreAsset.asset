@@ -12,30 +12,30 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 469c24fdb3bd6431b92cc1465bd9166b, type: 3}
   m_Name: RemoteConfigDataStoreAsset
   m_EditorClassIdentifier: 
-  _rsKeyList: "[\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\": \"2d2ecda5-b227-4cdc-9efb-7e559376923f\"\r\n   
+  _rsKeyList: "[\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\": \"6f9f7458-7aad-45fa-8506-f976a8086a53\"\r\n   
     },\r\n    \"rs\": {\r\n      \"key\": \"DevMode\",\r\n      \"type\": \"bool\",\r\n     
     \"value\": false\r\n    }\r\n  },\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\":
-    \"6ad2b8c8-c31d-4511-bc7d-6c6a42141992\"\r\n    },\r\n    \"rs\": {\r\n     
+    \"804fa132-7960-4256-a6de-a253da82eb0a\"\r\n    },\r\n    \"rs\": {\r\n     
     \"key\": \"BaseCost\",\r\n      \"type\": \"int\",\r\n      \"value\": 10\r\n   
-    }\r\n  },\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\": \"a803daa1-1395-4409-9512-0efb7b92d26d\"\r\n   
+    }\r\n  },\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\": \"7e75d6b1-99a8-432c-8aa9-70c47576751c\"\r\n   
     },\r\n    \"rs\": {\r\n      \"key\": \"BaseEnemyHP\",\r\n      \"type\": \"float\",\r\n     
     \"value\": 1.0\r\n    }\r\n  },\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\":
-    \"7beda3b8-1023-4639-88b0-8cab10c557ab\"\r\n    },\r\n    \"rs\": {\r\n     
+    \"8accfbcf-b5cc-47f9-bd15-2f145548a52e\"\r\n    },\r\n    \"rs\": {\r\n     
     \"key\": \"CoinValue\",\r\n      \"type\": \"int\",\r\n      \"value\": 1\r\n   
-    }\r\n  },\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\": \"78250cba-abf9-48d0-9513-3db48c0c01c9\"\r\n   
+    }\r\n  },\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\": \"dc7af371-f8f8-4c42-ab17-6f295abefe4b\"\r\n   
     },\r\n    \"rs\": {\r\n      \"key\": \"CoinDropChance\",\r\n      \"type\":
     \"float\",\r\n      \"value\": 0.2\r\n    }\r\n  }\r\n]"
-  _rsLastCachedKeyList: "[\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\": \"2d2ecda5-b227-4cdc-9efb-7e559376923f\"\r\n   
+  _rsLastCachedKeyList: "[\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\": \"6f9f7458-7aad-45fa-8506-f976a8086a53\"\r\n   
     },\r\n    \"rs\": {\r\n      \"key\": \"DevMode\",\r\n      \"type\": \"bool\",\r\n     
     \"value\": false\r\n    }\r\n  },\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\":
-    \"6ad2b8c8-c31d-4511-bc7d-6c6a42141992\"\r\n    },\r\n    \"rs\": {\r\n     
+    \"804fa132-7960-4256-a6de-a253da82eb0a\"\r\n    },\r\n    \"rs\": {\r\n     
     \"key\": \"BaseCost\",\r\n      \"type\": \"int\",\r\n      \"value\": 10\r\n   
-    }\r\n  },\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\": \"a803daa1-1395-4409-9512-0efb7b92d26d\"\r\n   
+    }\r\n  },\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\": \"7e75d6b1-99a8-432c-8aa9-70c47576751c\"\r\n   
     },\r\n    \"rs\": {\r\n      \"key\": \"BaseEnemyHP\",\r\n      \"type\": \"float\",\r\n     
     \"value\": 1.0\r\n    }\r\n  },\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\":
-    \"7beda3b8-1023-4639-88b0-8cab10c557ab\"\r\n    },\r\n    \"rs\": {\r\n     
+    \"8accfbcf-b5cc-47f9-bd15-2f145548a52e\"\r\n    },\r\n    \"rs\": {\r\n     
     \"key\": \"CoinValue\",\r\n      \"type\": \"int\",\r\n      \"value\": 1\r\n   
-    }\r\n  },\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\": \"78250cba-abf9-48d0-9513-3db48c0c01c9\"\r\n   
+    }\r\n  },\r\n  {\r\n    \"metadata\": {\r\n      \"entityId\": \"dc7af371-f8f8-4c42-ab17-6f295abefe4b\"\r\n   
     },\r\n    \"rs\": {\r\n      \"key\": \"CoinDropChance\",\r\n      \"type\":
     \"float\",\r\n      \"value\": 0.2\r\n    }\r\n  }\r\n]"
   _environments: "[\r\n  {\r\n    \"projectId\": \"da8711d9-d624-4f11-a3f0-565149bbc882\",\r\n   

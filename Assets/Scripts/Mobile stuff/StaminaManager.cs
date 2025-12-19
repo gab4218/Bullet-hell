@@ -121,7 +121,7 @@ public class StaminaManager : MonoBehaviour
             currentStamina--;
 
 
-            NotificationManager.Instance.CancelNotification(_staminaID);
+            //NotificationManager.Instance.CancelNotification(_staminaID);
             DisplayNotification();
             UpdateTexts();
 
@@ -151,7 +151,7 @@ public class StaminaManager : MonoBehaviour
         TimeSpan time = _nextTime - Localizator(_localization);
         float calc = _maxStamina - (currentStamina + 1) * _timePerStamina + (float)time.TotalSeconds + 1;
         DateTime fireTime = AddTime(Localizator(_localization), calc);
-        _staminaID = NotificationManager.Instance.DisplayNotification(_notifTitle, _notifText, _smallIcon, _largeIcon, fireTime);
+        //_staminaID = NotificationManager.Instance.DisplayNotification(_notifTitle, _notifText, _smallIcon, _largeIcon, fireTime);
     }
 
     DateTime AddTime(DateTime time, float add) => time.AddSeconds(add);
@@ -173,7 +173,7 @@ public class StaminaManager : MonoBehaviour
     {
         var c = new DateTime(Localizator(_localization).Year, 12, 24, 12, 0, 0);
         TimeSpan t = c - Localizator(_localization);
-        _christmasID = NotificationManager.Instance.DisplayNotification("It's Christmas!", "Come join us in our special Christmas event!", IconSelector.icon_0, IconSelector.icon_1, Localizator(_localization).AddHours(t.Hours));
+        //_christmasID = NotificationManager.Instance.DisplayNotification("It's Christmas!", "Come join us in our special Christmas event!", IconSelector.icon_0, IconSelector.icon_1, Localizator(_localization).AddHours(t.Hours));
         PlayerPrefs.SetInt("currentStamina", currentStamina);
         PlayerPrefs.SetInt("notifStamina", _staminaID);
         PlayerPrefs.SetInt("notifChristmas", _christmasID);
@@ -188,7 +188,7 @@ public class StaminaManager : MonoBehaviour
         if (PlayerPrefs.HasKey("notifChristmas")) _christmasID = PlayerPrefs.GetInt("notifChristmas");
         _nextTime = StringToDateTime(PlayerPrefs.GetString("nextStamina"));
         _lastTime = StringToDateTime(PlayerPrefs.GetString("lastStamina"));
-        NotificationManager.Instance.CancelNotification(_christmasID);
+        //NotificationManager.Instance.CancelNotification(_christmasID);
     }
 
     DateTime StringToDateTime(string data)

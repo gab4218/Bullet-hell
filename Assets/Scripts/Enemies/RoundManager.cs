@@ -13,7 +13,7 @@ public class RoundManager : MonoBehaviour
     public GameObject coin;
     public int round = 0;
     private float _coinDropChance = 0.05f;
-    private float _baseEnemyHP = 5f;
+    private float _baseEnemyHP = 1f;
     public Dictionary<EnemyTypes, int> prices = new Dictionary<EnemyTypes, int>()
     {
         { EnemyTypes.TP_StarSpin, 2 },
@@ -44,12 +44,12 @@ public class RoundManager : MonoBehaviour
 
     private void Start()
     {
+        _baseEnemyHP = 1;
         EventManager.Subscribe(EventType.RoundStart, StartRound);
         EventManager.TriggerEvent(EventType.RoundStart);
         RemoteConfigService.Instance.FetchCompleted += ChangeChance;
         RemoteConfigService.Instance.FetchCompleted += ChangeHP;
         _coinDropChance = RemoteConfigService.Instance.appConfig.GetFloat("CoinDropChance");
-        _baseEnemyHP = 1;
 
     }
     private void ChangeChance(ConfigResponse configResponse)
