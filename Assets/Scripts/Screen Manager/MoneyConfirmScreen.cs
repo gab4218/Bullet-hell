@@ -43,14 +43,16 @@ public class MoneyConfirmScreen : MonoBehaviour, IScreen
 
     public void Ok()
     {
-        ScreenManager.instance.Pop();
         MoneyManager.money += MoneyManager.newMoney;
         MoneyManager.newMoney = 0;
+        SoundSingleton.instance.Button();
+        ScreenManager.instance.Pop();
     }
 
     public void Dupe()
     {
         AdManager.instance.Dupe();
+        SoundSingleton.instance.Button();
         ScreenManager.instance.Pop();
     }
 }

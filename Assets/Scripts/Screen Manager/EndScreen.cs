@@ -31,6 +31,7 @@ public class EndScreen : MonoBehaviour, IScreen
 
     public void Menu()
     {
+        SoundSingleton.instance.Button();
         AsyncLoadManager.instance.LoadScene("Menu");
     }
 }

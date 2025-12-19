@@ -38,11 +38,13 @@ public class ExitScreen : MonoBehaviour, IScreen
 
     public void Yes()
     {
+        SoundSingleton.instance.Button();
         Application.Quit();
     }
 
     public void No()
     {
+        SoundSingleton.instance.Button();
         ScreenManager.instance.Pop();
     }
 }

@@ -9,7 +9,7 @@ public class EnemySeekingBurst : IEnemyAttack
 
     public EnemySeekingBurst(Sprite spr) => _bulletSprite = spr;
 
-    public void Attack(Transform transform, float cooldown, float speed, Animator anim)
+    public void Attack(Transform transform, float cooldown, float speed, Animator anim, AudioSource audio, AudioClip sound)
     {
         _cd += Time.deltaTime;
         if (_cd < cooldown) return;
@@ -18,6 +18,7 @@ public class EnemySeekingBurst : IEnemyAttack
             _t += Time.deltaTime;
             if (_t < 0.5f) return;
             anim.SetTrigger("Shot");
+            audio.PlayOneShot(sound);
             var b = GameManager.instance.enemyBulletPool.GetObject();
             _t = 0f;
             _index++;

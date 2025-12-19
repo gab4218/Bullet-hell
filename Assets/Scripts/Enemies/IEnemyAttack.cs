@@ -2,5 +2,5 @@ using UnityEngine;
 
 public interface IEnemyAttack
 {
-    public void Attack(Transform transform, float cooldown, float speed, Animator anim);
+    public void Attack(Transform transform, float cooldown, float speed, Animator anim, AudioSource audio, AudioClip sound);
 }

@@ -26,11 +26,13 @@ public class DeleteScreen : MonoBehaviour, IScreen
         Menu.loaded = true;
         MoneyManager.money = data.money;
         InventoryManager.unlockedItems = data.unlockedCosmetics;
+        SoundSingleton.instance.Button();
         ScreenManager.instance.Pop();
     }
 
     public void No()
     {
+        SoundSingleton.instance.Button();
         ScreenManager.instance.Pop();
     }
 }

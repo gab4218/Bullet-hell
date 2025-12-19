@@ -7,12 +7,13 @@ public class EnemyStarSpin : IEnemyAttack
 
     public EnemyStarSpin(Sprite spr) => _bulletSprite = spr;
 
-    public void Attack(Transform transform, float cooldown, float speed, Animator anim)
+    public void Attack(Transform transform, float cooldown, float speed, Animator anim, AudioSource audio, AudioClip sound)
     {
         _cd += Time.deltaTime;
         if (_cd < cooldown) return;
         _cd = 0;
         anim.SetTrigger("Shot");
+        audio.PlayOneShot(sound);
         for (int i = 0; i < 8; i++)
         {
             var b = GameManager.instance.enemyBulletPool.GetObject();

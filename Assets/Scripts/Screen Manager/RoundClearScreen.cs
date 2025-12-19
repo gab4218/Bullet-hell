@@ -89,6 +89,7 @@ public class RoundClearScreen : MonoBehaviour, IScreen
 
     public void PickUpgrade(UpgradeOption selection)
     {
+        SoundSingleton.instance.Button();
         switch (selection.reward)
         {
             case RewardTypes.Heal:

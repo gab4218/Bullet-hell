@@ -1,6 +1,5 @@
 using System;
 using System.Collections;
-using System.Security.Cryptography;
 using TMPro;
 using UnityEngine;
 
@@ -172,6 +171,9 @@ public class StaminaManager : MonoBehaviour
 
     void SaveData()
     {
+        var c = new DateTime(Localizator(_localization).Year, 12, 24, 12, 0, 0);
+        TimeSpan t = c - Localizator(_localization);
+        _christmasID = NotificationManager.Instance.DisplayNotification("It's Christmas!", "Come join us in our special Christmas event!", IconSelector.icon_0, IconSelector.icon_1, Localizator(_localization).AddHours(t.Hours));
         PlayerPrefs.SetInt("currentStamina", currentStamina);
         PlayerPrefs.SetInt("notifStamina", _staminaID);
         PlayerPrefs.SetInt("notifChristmas", _christmasID);
@@ -186,6 +188,7 @@ public class StaminaManager : MonoBehaviour
         if (PlayerPrefs.HasKey("notifChristmas")) _christmasID = PlayerPrefs.GetInt("notifChristmas");
         _nextTime = StringToDateTime(PlayerPrefs.GetString("nextStamina"));
         _lastTime = StringToDateTime(PlayerPrefs.GetString("lastStamina"));
+        NotificationManager.Instance.CancelNotification(_christmasID);
     }
 
     DateTime StringToDateTime(string data)

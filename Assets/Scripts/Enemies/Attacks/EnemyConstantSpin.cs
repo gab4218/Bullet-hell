@@ -8,13 +8,13 @@ public class EnemyConstantSpin : IEnemyAttack
 
     public EnemyConstantSpin(Sprite spr) => _bulletSprite = spr;
 
-    public void Attack(Transform transform, float cooldown, float speed, Animator anim)
+    public void Attack(Transform transform, float cooldown, float speed, Animator anim, AudioSource audio, AudioClip sound)
     {
         _cd += Time.deltaTime;
         if (_cd < cooldown) return;
         _cd = 0;
         _i++;
-
+        audio.PlayOneShot(sound);
         var b = GameManager.instance.enemyBulletPool.GetObject();
         b.rotationalSpeed = 0;
         b.speed = speed;

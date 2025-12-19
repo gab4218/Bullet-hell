@@ -35,8 +35,8 @@ public class PlayerMain : MonoBehaviour, IHittable
         _view = new PlayerView(_model, GetComponent<Animator>()).SetHpSize(_hpSize).SetHpImages(_hpImage, _maxHpImage).SetSound(_throwSound);
 #if UNITY_STANDALONE_WIN
         _controller = new PlayerControllerPC(_model, _view);
-        _move.gameObject.SetActive(false);
-        _attack.gameObject.SetActive(false);
+        _move.transform.parent.gameObject.SetActive(false);
+        _attack.transform.parent.gameObject.SetActive(false);
 #else
         _controller = new PlayerControllerMobile(_model, _view).SetInputs(_move, _attack);
 #endif

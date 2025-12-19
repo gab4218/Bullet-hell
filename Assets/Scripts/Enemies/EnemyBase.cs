@@ -12,6 +12,8 @@ public class EnemyBase : MonoBehaviour, IHittable
     private Sprite _sprite;
     private SpriteRenderer _sRenderer;
     [SerializeField] private Animator _anim;
+    [SerializeField] private AudioSource _source;
+    [SerializeField] private AudioClip _clip;
     private IEnemyMovement _movement;
     private IEnemyAttack _attack;
     private Rigidbody2D _rb;
@@ -93,7 +95,7 @@ public class EnemyBase : MonoBehaviour, IHittable
     void Update()
     {
         _movement.Move(transform, _rb, _speed);
-        _attack.Attack(transform, _cooldown, _bulletSpeed, _anim);
+        _attack.Attack(transform, _cooldown, _bulletSpeed, _anim, _source, _clip);
     }
 
     public static void SetState(EnemyBase e, bool state)
